@@ -1,0 +1,5 @@
+For the purpose of onboarding, creating me  a , which will include indication to slide a page or widget,
+Ensure it flexible enough to change its width and height,and make it so that the wraper takes as input widgets for each slide page,
+page one could be a container wit text one, second slide could be a container with text , 'second container'
+
+call the wraper 
