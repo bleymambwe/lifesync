@@ -54,12 +54,18 @@ class AppTheme {
     fontSize: 16,
     color: darkOrange,
   );
+  static TextStyle subsubsubheading = TextStyle(
+    fontFamily: 'Roca',
+    //fontWeight: FontWeight.w400,
+    fontSize: 16,
+    color: Colors.black87,
+  );
 
   static const TextStyle subheading = TextStyle(
     fontFamily: 'Roca',
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.bold,
     fontSize: 20,
-    color: secondaryColor,
+    color: Colors.black,
   );
 
   static const TextStyle bodyText = TextStyle(
@@ -67,6 +73,13 @@ class AppTheme {
     fontWeight: FontWeight.w500,
     fontSize: 16,
     color: Colors.black54,
+  );
+
+  static const TextStyle bodybodyText = TextStyle(
+    fontFamily: 'Roca',
+    fontWeight: FontWeight.w100,
+    fontSize: 14,
+    color: darkOrange,
   );
 }
 

@@ -7,6 +7,8 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 import '../Utils/theme.dart';
 import 'package:lifesync/Dashboard/tablayout.dart';
 import 'prescriptiondashboard.dart';
+import 'dash.dart';
+import 'datawidget.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -29,18 +31,33 @@ class DashboardPage extends StatelessWidget {
           child: Column(
             children: [
               DashboardAppBar(),
+              SizedBox(width: 600, height: 400, child: DataWidget()),
               // Container(
               //   color: Colors.grey,
               //   height: 5,
               //   width: double.infinity,
               // ),
-              TabLayout(),
+              // TabLayout(),
               // Container(
               //   color: Colors.grey,
               //   height: 5,
               //   width: double.infinity,
               // ),
-              PrescriptionDashboard(),
+              // PrescriptionDashboard(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 850,
+                        height: 700,
+//color: Colors.green,
+                        child: DrugSearchPage(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         )),

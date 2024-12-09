@@ -11,19 +11,25 @@ import 'package:provider/provider.dart';
 import 'stateprovider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<StateProvider>(
-            create: (context) => StateProvider()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<StateProvider>(
+            create: (context) => StateProvider(),
+          ),
+        ],
+        child: const MyApp(),
+      ),
+    );
+  } catch (e) {
+    print('Firebase initialization error: $e');
+    // Optionally, show an error widget or log the error
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -60,7 +66,7 @@ class SharedScaffold extends StatelessWidget {
             case '/dashboard':
               return MaterialPageRoute(builder: (_) => const DashboardPage());
             default:
-              return MaterialPageRoute(builder: (_) => const MyHomePage());
+              return MaterialPageRoute(builder: (_) => const DashboardPage());
           }
         },
       ),

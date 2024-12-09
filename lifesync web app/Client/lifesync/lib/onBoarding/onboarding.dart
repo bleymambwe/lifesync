@@ -28,7 +28,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ),
           // color: Colors.yellowAccent,
           child: const Center(
-            child: OnboardingCarousel(width: 500, height: 600, slides: [
+            child: OnboardingCarousel(width: 600, height: 600, slides: [
+              onboardStart(),
               onboardOne(),
               onboardTwo(),
               onboardThree(),
@@ -125,6 +126,56 @@ class _onboardThreeState extends State<onboardThree> {
   }
 }
 
+class onboardStart extends StatelessWidget {
+  const onboardStart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'Insights from the Lokahi Hackathon Dataset representing data in the healthcare',
+          textAlign: TextAlign.center,
+          style: AppTheme.heading,
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                Icon(Icons.money_off),
+                Text('High Drug Costs and Data Gaps',
+                    style: AppTheme.subheading),
+              ],
+            ),
+            Text(
+              '''
+Theres a wide range in amount paid of prescriptions as high as 359568.86 paid and as low as : -124248.5 refunded or lost through average activities.
+''',
+              style: AppTheme.subsubheadingtitle,
+            ),
+            Row(
+              children: [
+                Icon(Icons.money_off),
+                Text('Reactive and Generic Interpretation of Prescriptions',
+                    style: AppTheme.subheading),
+              ],
+            ),
+            Text(
+              '''
+There are thousands of missing procedure codes, likely stemming from systematic bias. Additionally, many codes, such as **BW21ZZZ** and **10D00Z0**, highlight a broader issue: the lack of personalization in healthcare. This underscores a system that prioritizes reactive approaches over proactive, patient-centered care.
+''',
+              style: AppTheme.subsubheadingtitle,
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
+
 class onboardFour extends StatelessWidget {
   const onboardFour({super.key});
 
@@ -161,12 +212,12 @@ class onboardFour extends StatelessWidget {
                     ),
                   );
                 },
-                child: const BlurryContainer(
-                  blur: 15,
-                  elevation: 5,
-                  color: Colors.transparent,
-                  padding: EdgeInsets.all(8),
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                child: const GContainer(
+                  // blur: 15,
+                  // elevation: 5,
+                  // color: Colors.transparent,
+                  // padding: EdgeInsets.all(8),
+                  // borderRadius: BorderRadius.all(Radius.circular(12)),
                   child: Text(
                     'Get Started',
                     style: AppTheme.bodyText,
