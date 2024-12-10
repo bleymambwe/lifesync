@@ -60,7 +60,7 @@ class SharedScaffold extends StatelessWidget {
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/home':
-              return MaterialPageRoute(builder: (_) => const DashboardPage());
+              return MaterialPageRoute(builder: (_) => const MyHomePage());
             case '/onboarding':
               return MaterialPageRoute(builder: (_) => const OnboardingPage());
             case '/dashboard':
@@ -107,10 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        Center(
-            child: Opacity(
-                opacity: 0.1,
-                child: Image.asset('assets/gradientgrainycompressed.png'))),
+        // Center(
+        //     child: Opacity(
+        //         opacity: 0.1,
+        //         child: Image.asset('assets/gradientgrainycompressed.png'))
+
+        //         ),
         Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     Navigator.of(context).push(
                       CustomPageRoute(
-                        page: const DashboardPage(),
+                        page: const OnboardingPage(),
                         transitionType: TransitionType
                             .fade, // You can also use slide, scale, or rotate
                       ),

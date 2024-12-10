@@ -3,39 +3,37 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class StateProvider extends ChangeNotifier {
-  // Variable to store the response from the database
+  bool isBefore = false;
   String _responseText = '';
   String get responseText => _responseText;
-  bool isBefore = false;
 
-  // Firebase Database reference
+  String _drugResponseText = '';
+  String get drugResponseText => _drugResponseText;
+
+  List<Map<String, dynamic>> _potentialSubstitutes = [];
+  List<Map<String, dynamic>> get potentialSubstitutes => _potentialSubstitutes;
+
   DatabaseReference? _databaseRef;
 
-  // Constructor to set up the database listener
   StateProvider() {
     _initializeFirebase();
   }
 
-  // Initialize Firebase and set up the database reference
   Future<void> _initializeFirebase() async {
     try {
-      // Ensure Firebase is initialized
       if (Firebase.apps.isEmpty) {
         await Firebase.initializeApp();
       }
 
-      // Initialize database reference with the correct URL
-      // Replace 'YOUR_FIREBASE_PROJECT_ID' with your actual Firebase project ID
       _databaseRef = FirebaseDatabase.instanceFor(
               app: Firebase.app(),
               databaseURL: 'https://lifesync-ai-default-rtdb.firebaseio.com/')
           .ref();
 
-      // Ensure nodes exist
       await _ensureNodesExist();
 
-      // Set up the response listener
       _listenToResponses();
+      _listenToDrugResponses(); // New listener for drug substitute responses
     } catch (error) {
       print("Firebase initialization error: $error");
       _responseText = "Firebase initialization failed: $error";
@@ -43,28 +41,25 @@ class StateProvider extends ChangeNotifier {
     }
   }
 
-  // Ensure user/post and user/response nodes exist
   Future<void> _ensureNodesExist() async {
     try {
-      // Null check for _databaseRef
       if (_databaseRef == null) {
         throw Exception("Database reference not initialized");
       }
 
-      // Check and create user/post node if it doesn't exist
-      DatabaseReference postRef = _databaseRef!.child('user/post');
-      DataSnapshot postSnapshot = await postRef.get();
-      if (!postSnapshot.exists) {
-        await postRef.set({});
-        print("Created streaming/post node");
+      DatabaseReference mainRef = _databaseRef!.child('user/response/main');
+      DataSnapshot mainSnapshot = await mainRef.get();
+      if (!mainSnapshot.exists) {
+        await mainRef.set({});
+        print("Created user/response/main node");
       }
 
-      // Check and create user/response node if it doesn't exist
-      DatabaseReference responseRef = _databaseRef!.child('user/response');
-      DataSnapshot responseSnapshot = await responseRef.get();
-      if (!responseSnapshot.exists) {
-        await responseRef.set({});
-        print("Created user/response node");
+      DatabaseReference drugRef =
+          _databaseRef!.child('user/response/drug_substitute');
+      DataSnapshot drugSnapshot = await drugRef.get();
+      if (!drugSnapshot.exists) {
+        await drugRef.set({});
+        print("Created user/response/drug_substitute node");
       }
     } catch (error) {
       print("Error ensuring nodes exist: $error");
@@ -99,7 +94,27 @@ class StateProvider extends ChangeNotifier {
     }
   }
 
-  // Function to listen to responses from the database
+  Future<void> postDrug(String text) async {
+    try {
+      if (_databaseRef == null) {
+        throw Exception("Database reference not initialized");
+      }
+
+      final timestamp = DateTime.now().toIso8601String();
+      final data = {
+        'time': timestamp,
+        'feature': 'drug substitute',
+        'prompt': text,
+      };
+
+      await _databaseRef!.child('streaming/post').push().set(data);
+    } catch (error) {
+      print("Failed to post drug: $error");
+      _responseText = "Failed to post drug: $error";
+      notifyListeners();
+    }
+  }
+
   void _listenToResponses() {
     try {
       // Null check for _databaseRef
@@ -108,7 +123,7 @@ class StateProvider extends ChangeNotifier {
       }
 
       // Listen to all children added to the user/response node
-      _databaseRef!.child('user/response').onChildAdded.listen((event) {
+      _databaseRef!.child('user/response/main').onChildAdded.listen((event) {
         // Print debug information
         print("Response event received: ${event.snapshot.value}");
 
@@ -139,7 +154,7 @@ class StateProvider extends ChangeNotifier {
       });
 
       // Additionally, listen for value events to catch existing data
-      _databaseRef!.child('user/response').onValue.listen((event) {
+      _databaseRef!.child('user/response/main').onValue.listen((event) {
         final responseData = event.snapshot.value;
         print("OnValue event received: $responseData");
 
@@ -169,6 +184,58 @@ class StateProvider extends ChangeNotifier {
     } catch (error) {
       print("Failed to set up response listener: $error");
       _responseText = "Failed to set up response listener: $error";
+      notifyListeners();
+    }
+  }
+
+  void _listenToDrugResponses() {
+    try {
+      if (_databaseRef == null) {
+        throw Exception("Database reference not initialized");
+      }
+
+      // Listen to all children added to the drug substitute response node
+      _databaseRef!
+          .child('user/response/drug_substitute/response')
+          .onChildAdded
+          .listen((event) {
+        final responseData = event.snapshot.value;
+
+        print("Drug substitute response received: $responseData");
+
+        if (responseData is String) {
+          // Handle string response directly
+          _drugResponseText = responseData;
+          print("Updated drug response text (String): $_drugResponseText");
+        } else if (responseData is List) {
+          // Handle list of potential substitutes
+          _potentialSubstitutes = responseData.cast<Map<String, dynamic>>();
+
+          _drugResponseText =
+              _potentialSubstitutes.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
+            final substanceName = item['substance_name'] ?? 'Unknown';
+            final brandNames = (item['brand_names'] as List?)?.join(', ') ??
+                'No brands available';
+            return '[$index] Substance: $substanceName, Brands: $brandNames';
+          }).join('\n');
+
+          print("Updated drug response text (List): $_drugResponseText");
+        } else {
+          // Unexpected format
+          print("Unexpected response data type: ${responseData.runtimeType}");
+          _drugResponseText = "Unexpected response data format.";
+        }
+        notifyListeners();
+      }, onError: (error) {
+        print("Error listening to drug responses: $error");
+        _drugResponseText = "Error listening to drug responses: $error";
+        notifyListeners();
+      });
+    } catch (error) {
+      print("Failed to set up drug response listener: $error");
+      _drugResponseText = "Failed to set up drug response listener: $error";
       notifyListeners();
     }
   }

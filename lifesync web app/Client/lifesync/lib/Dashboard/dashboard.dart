@@ -9,6 +9,7 @@ import 'package:lifesync/Dashboard/tablayout.dart';
 import 'prescriptiondashboard.dart';
 import 'dash.dart';
 import 'datawidget.dart';
+import 'sdui.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -31,7 +32,14 @@ class DashboardPage extends StatelessWidget {
           child: Column(
             children: [
               DashboardAppBar(),
-              SizedBox(width: 600, height: 400, child: DataWidget()),
+
+              Row(
+                children: [
+                  SizedBox(width: 600, height: 400, child: DrugSubstituteUI()),
+                  SizedBox(width: 600, height: 400, child: DataWidget()),
+                ],
+              ),
+
               // Container(
               //   color: Colors.grey,
               //   height: 5,
@@ -48,12 +56,13 @@ class DashboardPage extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Container(
-                        width: 850,
-                        height: 700,
-//color: Colors.green,
-                        child: DrugSearchPage(),
-                      ),
+//                       Container(
+//                         width: 850,
+//                         height: 700,
+// //color: Colors.green,
+                      //  SDUI(),
+//                         // DrugSearchPage(),
+//                       ),
                     ],
                   ),
                 ),
