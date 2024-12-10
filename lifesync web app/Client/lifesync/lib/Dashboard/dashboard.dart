@@ -32,23 +32,7 @@ class DashboardPage extends StatelessWidget {
           child: Column(
             children: [
               DashboardAppBar(),
-
-              Row(
-                children: [
-                  //SizedBox(width: 600, height: 400, child: DrugSubstituteUI()),
-                  // SizedBox(width: 600, height: 400, child: DataWidget()),
-                  SizedBox(
-                      width: 600,
-                      height: 400,
-                      child: Column(
-                        children: [
-                          IconButton.filledTonal(
-                              onPressed: () {}, icon: Icon(Icons.call)),
-                          Text('data')
-                        ],
-                      )),
-                ],
-              ),
+              CallWidget(),
 
               // Container(
               //   color: Colors.grey,
@@ -254,6 +238,41 @@ class _AnimatedDialState extends State<AnimatedDial> {
           ),
         );
       },
+    );
+  }
+}
+
+class CallWidget extends StatefulWidget {
+  const CallWidget({super.key});
+
+  @override
+  State<CallWidget> createState() => _CallWidgetState();
+}
+
+class _CallWidgetState extends State<CallWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        //SizedBox(width: 600, height: 400, child: DrugSubstituteUI()),
+        // SizedBox(width: 600, height: 400, child: DataWidget()),
+        SizedBox(
+            width: 600,
+            height: 400,
+            child: Consumer<StateProvider>(
+                builder: (context, stateProvider, child) {
+              return Column(
+                children: [
+                  IconButton.filledTonal(
+                      onPressed: () {
+                        stateProvider.postCall();
+                      },
+                      icon: Icon(Icons.call)),
+                  Text('data')
+                ],
+              );
+            })),
+      ],
     );
   }
 }

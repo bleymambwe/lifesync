@@ -119,6 +119,34 @@ class StateProvider extends ChangeNotifier {
     }
   }
 
+  // Function to post text to the database
+  Future<void> postCall() async {
+    String featureState = 'call';
+    try {
+      // Null check for _databaseRef
+      if (_databaseRef == null) {
+        throw Exception("Database reference not initialized");
+      }
+
+      // Get the current timestamp
+      final timestamp = DateTime.now().toIso8601String();
+
+      // Construct the data to push
+      final data = {
+        'time': timestamp,
+        'feature': featureState,
+        // 'prompt': text,
+      };
+
+      // Push data to Firebase Realtime Database under the "streaming/post" node
+      await _databaseRef!.child('streaming/post').push().set(data);
+    } catch (error) {
+      print("Failed to post text: $error");
+      _responseText = "Failed to post text: $error";
+      notifyListeners();
+    }
+  }
+
   Future<void> postDrug(String text) async {
     try {
       if (_databaseRef == null) {
