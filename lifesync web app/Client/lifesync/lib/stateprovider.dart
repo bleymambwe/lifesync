@@ -15,6 +15,31 @@ class StateProvider extends ChangeNotifier {
 
   DatabaseReference? _databaseRef;
 
+  // Form field variables
+  String name = '';
+  String age = '';
+  String contact = '';
+  String bp = '';
+  String sugar = '';
+  String underlyingCondition = '';
+  String prescription = '';
+
+  // Computed condition variable (concatenation of everything except name and contact)
+  String get condition {
+    // Combine all additional details
+    return [age, bp, sugar, underlyingCondition, prescription]
+        .where((element) => element.isNotEmpty)
+        .join(' | ');
+  }
+
+  // Function to validate form fields
+  bool validateForm() {
+    return name.isNotEmpty &&
+        age.isNotEmpty &&
+        contact.isNotEmpty &&
+        underlyingCondition.isNotEmpty;
+  }
+
   StateProvider() {
     _initializeFirebase();
   }
@@ -238,5 +263,107 @@ class StateProvider extends ChangeNotifier {
       _drugResponseText = "Failed to set up drug response listener: $error";
       notifyListeners();
     }
+  }
+
+  // Function to post details to Firebase Realtime Database
+  Future<void> postDetails(BuildContext context) async {
+    print('posting details');
+    try {
+      // Null check for _databaseRef
+      if (_databaseRef == null) {
+        throw Exception("Database reference not initialized");
+      }
+
+      // Validate form before posting
+      if (!validateForm()) {
+        // Show error dialog if required fields are not filled
+        _showValidationErrorDialog(context);
+        return;
+      }
+
+      // Get the current timestamp
+      final timestamp = DateTime.now().toIso8601String();
+
+      // Construct the data to push
+      final data = {
+        'time': timestamp,
+        'user_details': {
+          'name': name,
+          'age': age,
+          'contact': contact,
+          'bp': bp,
+          'sugar': sugar,
+          'underlying_condition': underlyingCondition,
+          'prescription': prescription,
+          'condition': condition
+        }
+      };
+
+      // Push data to Firebase Realtime Database under the "user/details" node
+      await _databaseRef!.child('user/details').push().set(data);
+
+      print("Details successfully uploaded");
+    } catch (error) {
+      print("Failed to post details: $error");
+      notifyListeners();
+    }
+  }
+
+  // Method to show validation error dialog
+  void _showValidationErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Incomplete Information'),
+          content: Text(
+              'Please fill in all required fields:\n- Name\n- Age\n- Contact Information\n- Underlying Condition'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Setters for form fields
+  void setName(String value) {
+    name = value;
+    notifyListeners();
+  }
+
+  void setAge(String value) {
+    age = value;
+    notifyListeners();
+  }
+
+  void setContact(String value) {
+    contact = value;
+    notifyListeners();
+  }
+
+  void setBP(String value) {
+    bp = value;
+    notifyListeners();
+  }
+
+  void setSugar(String value) {
+    sugar = value;
+    notifyListeners();
+  }
+
+  void setUnderlyingCondition(String value) {
+    underlyingCondition = value;
+    notifyListeners();
+  }
+
+  void setPrescription(String value) {
+    prescription = value;
+    notifyListeners();
   }
 }

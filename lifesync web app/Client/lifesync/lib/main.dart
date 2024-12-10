@@ -82,16 +82,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<String> getFirebaseImageUrl() async {
-    try {
-      final ref =
-          FirebaseStorage.instance.ref('homepage/gradientgrainycompressed.png');
-      return await ref.getDownloadURL();
-    } catch (e) {
-      print('Error getting image URL: $e');
-      return '';
-    }
-  }
+  // Future<String> getFirebaseImageUrl() async {
+  //   try {
+  //     final ref =
+  //         FirebaseStorage.instance.ref('homepage/gradientgrainycompressed.png');
+  //     return await ref.getDownloadURL();
+  //   } catch (e) {
+  //     print('Error getting image URL: $e');
+  //     return '';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
