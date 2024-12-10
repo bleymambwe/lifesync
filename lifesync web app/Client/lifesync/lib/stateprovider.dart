@@ -265,26 +265,23 @@ class StateProvider extends ChangeNotifier {
     }
   }
 
-  // Function to post details to Firebase Realtime Database
   Future<void> postDetails(BuildContext context) async {
-    print('posting details');
+    print('Attempting to post details');
     try {
-      // Null check for _databaseRef
       if (_databaseRef == null) {
+        print('Database reference is null');
         throw Exception("Database reference not initialized");
       }
 
-      // Validate form before posting
+      // More robust form validation
       if (!validateForm()) {
-        // Show error dialog if required fields are not filled
+        print('Form validation failed');
         _showValidationErrorDialog(context);
         return;
       }
 
-      // Get the current timestamp
       final timestamp = DateTime.now().toIso8601String();
 
-      // Construct the data to push
       final data = {
         'time': timestamp,
         'user_details': {
@@ -299,13 +296,23 @@ class StateProvider extends ChangeNotifier {
         }
       };
 
-      // Push data to Firebase Realtime Database under the "user/details" node
-      await _databaseRef!.child('user/details').push().set(data);
+      // More verbose logging
+      print('Prepared data to post: $data');
 
-      print("Details successfully uploaded");
+      // Directly updating the existing 'user/details' node
+      DatabaseReference userDetailsRef = _databaseRef!.child('user/details');
+      print('Existing reference to update: ${userDetailsRef.path}');
+
+      await userDetailsRef.set(data).then((_) {
+        print(
+            "Details successfully uploaded to reference: ${userDetailsRef.path}");
+      }).catchError((error) {
+        print("Error setting data: $error");
+        throw error;
+      });
     } catch (error) {
-      print("Failed to post details: $error");
-      notifyListeners();
+      print("Comprehensive error in postDetails: $error");
+      // Optional: show a snackbar or toast to user about the error
     }
   }
 
@@ -365,5 +372,9 @@ class StateProvider extends ChangeNotifier {
   void setPrescription(String value) {
     prescription = value;
     notifyListeners();
+  }
+
+  void checkStarted() {
+    print('welcome to the homepage');
   }
 }

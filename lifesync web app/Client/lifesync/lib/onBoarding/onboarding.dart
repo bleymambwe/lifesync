@@ -7,6 +7,7 @@ import 'package:lifesync/Dashboard/dashboard.dart';
 import 'onboardingcarousel.dart';
 import 'package:lifesync/Utils/custom_transition.dart';
 import 'onboardfour.dart';
+import 'onboardfinal.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -178,148 +179,148 @@ There are thousands of missing procedure codes, likely stemming from systematic 
   }
 }
 
-class OnboardFinal extends StatelessWidget {
-  const OnboardFinal({super.key});
+// class OnboardFinal extends StatelessWidget {
+//   const OnboardFinal({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 16),
-            Text(
-              "Please fill in your details:",
-              style: AppTheme.subheadingtitle,
-            ),
-            const SizedBox(height: 24),
-            // Row for Name and Age
-            Row(
-              children: [
-                Expanded(
-                  child: _buildBlurryTextField(
-                    label: "Name",
-                    hintText: "Enter your name",
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildBlurryTextField(
-                    label: "Age",
-                    hintText: "Enter your age",
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Row for Contact Information, BP, and Sugar
-            Row(
-              children: [
-                Expanded(
-                  child: _buildBlurryTextField(
-                    label: "Contact ",
-                    hintText: "Include your country code e.g +44..",
-                    keyboardType: TextInputType.phone,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildBlurryTextField(
-                    label: "Current BP",
-                    hintText: "Enter BP",
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildBlurryTextField(
-                    label: "Sugar",
-                    hintText: "Enter sugar level",
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Row for Underlying Condition and Prescription
-            Row(
-              children: [
-                Expanded(
-                  child: _buildBlurryTextField(
-                    label: "Underlying Condition",
-                    hintText: "Enter any underlying conditions",
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildBlurryTextField(
-                    label: "Prescription",
-                    hintText: "Enter your prescription",
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                CustomPageRoute(
-                  page: const DashboardPage(),
-                  transitionType: TransitionType
-                      .fade, // You can also use slide, scale, or rotate
-                ),
-              );
-            },
-            child: const GContainer(
-              // blur: 15,
-              // elevation: 5,
-              // color: Colors.transparent,
-              // padding: EdgeInsets.all(8),
-              // borderRadius: BorderRadius.all(Radius.circular(12)),
-              child: Text(
-                'Get Started',
-                style: AppTheme.bodyText,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             const SizedBox(height: 16),
+//             Text(
+//               "Please fill in your details:",
+//               style: AppTheme.subheadingtitle,
+//             ),
+//             const SizedBox(height: 24),
+//             // Row for Name and Age
+//             Row(
+//               children: [
+//                 Expanded(
+//                   child: _buildBlurryTextField(
+//                     label: "Name",
+//                     hintText: "Enter your name",
+//                   ),
+//                 ),
+//                 const SizedBox(width: 16),
+//                 Expanded(
+//                   child: _buildBlurryTextField(
+//                     label: "Age",
+//                     hintText: "Enter your age",
+//                     keyboardType: TextInputType.number,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             const SizedBox(height: 16),
+//             // Row for Contact Information, BP, and Sugar
+//             Row(
+//               children: [
+//                 Expanded(
+//                   child: _buildBlurryTextField(
+//                     label: "Contact ",
+//                     hintText: "Include your country code e.g +44..",
+//                     keyboardType: TextInputType.phone,
+//                   ),
+//                 ),
+//                 const SizedBox(width: 16),
+//                 Expanded(
+//                   child: _buildBlurryTextField(
+//                     label: "Current BP",
+//                     hintText: "Enter BP",
+//                   ),
+//                 ),
+//                 const SizedBox(width: 16),
+//                 Expanded(
+//                   child: _buildBlurryTextField(
+//                     label: "Sugar",
+//                     hintText: "Enter sugar level",
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             const SizedBox(height: 16),
+//             // Row for Underlying Condition and Prescription
+//             Row(
+//               children: [
+//                 Expanded(
+//                   child: _buildBlurryTextField(
+//                     label: "Underlying Condition",
+//                     hintText: "Enter any underlying conditions",
+//                   ),
+//                 ),
+//                 const SizedBox(width: 16),
+//                 Expanded(
+//                   child: _buildBlurryTextField(
+//                     label: "Prescription",
+//                     hintText: "Enter your prescription",
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//         Align(
+//           alignment: Alignment.bottomRight,
+//           child: InkWell(
+//             onTap: () {
+//               Navigator.of(context).push(
+//                 CustomPageRoute(
+//                   page: const DashboardPage(),
+//                   transitionType: TransitionType
+//                       .fade, // You can also use slide, scale, or rotate
+//                 ),
+//               );
+//             },
+//             child: const GContainer(
+//               // blur: 15,
+//               // elevation: 5,
+//               // color: Colors.transparent,
+//               // padding: EdgeInsets.all(8),
+//               // borderRadius: BorderRadius.all(Radius.circular(12)),
+//               child: Text(
+//                 'Get Start',
+//                 style: AppTheme.bodyText,
+//               ),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
 
-  Widget _buildBlurryTextField({
-    required String label,
-    required String hintText,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return BlurryContainer(
-      blur: 15,
-      elevation: 5,
-      color: Colors.transparent.withGreen(50),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      borderRadius: const BorderRadius.all(Radius.circular(12)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: AppTheme.subsubheadingtitle,
-          ),
-          const SizedBox(height: 8),
-          TextField(
-            keyboardType: keyboardType,
-            style: AppTheme.bodyText,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: AppTheme.bodybodyText,
-              border: InputBorder.none,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   Widget _buildBlurryTextField({
+//     required String label,
+//     required String hintText,
+//     TextInputType keyboardType = TextInputType.text,
+//   }) {
+//     return BlurryContainer(
+//       blur: 15,
+//       elevation: 5,
+//       color: Colors.transparent.withGreen(50),
+//       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+//       borderRadius: const BorderRadius.all(Radius.circular(12)),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             label,
+//             style: AppTheme.subsubheadingtitle,
+//           ),
+//           const SizedBox(height: 8),
+//           TextField(
+//             keyboardType: keyboardType,
+//             style: AppTheme.bodyText,
+//             decoration: InputDecoration(
+//               hintText: hintText,
+//               hintStyle: AppTheme.bodybodyText,
+//               border: InputBorder.none,
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

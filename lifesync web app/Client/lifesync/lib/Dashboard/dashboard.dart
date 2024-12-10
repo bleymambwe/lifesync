@@ -35,8 +35,18 @@ class DashboardPage extends StatelessWidget {
 
               Row(
                 children: [
-                  SizedBox(width: 600, height: 400, child: DrugSubstituteUI()),
-                  SizedBox(width: 600, height: 400, child: DataWidget()),
+                  //SizedBox(width: 600, height: 400, child: DrugSubstituteUI()),
+                  // SizedBox(width: 600, height: 400, child: DataWidget()),
+                  SizedBox(
+                      width: 600,
+                      height: 400,
+                      child: Column(
+                        children: [
+                          IconButton.filledTonal(
+                              onPressed: () {}, icon: Icon(Icons.call)),
+                          Text('data')
+                        ],
+                      )),
                 ],
               ),
 

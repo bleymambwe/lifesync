@@ -52,8 +52,8 @@ class OnboardFinal extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _buildBlurryTextField(
-                        label: "Contact Information",
-                        hintText: "Enter your contact info",
+                        label: "Contact ",
+                        hintText: "e.g +44...",
                         keyboardType: TextInputType.phone,
                         onChanged: stateProvider.setContact,
                       ),
@@ -61,16 +61,16 @@ class OnboardFinal extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: _buildBlurryTextField(
-                        label: "Current BP",
-                        hintText: "Enter BP",
+                        label: "Current BP  ",
+                        hintText: "e.g 120/80 mmHg",
                         onChanged: stateProvider.setBP,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: _buildBlurryTextField(
-                        label: "Sugar",
-                        hintText: "Enter sugar level",
+                        label: "Sugar (mmHg)",
+                        hintText: "e.g 5.5 mmol/L",
                         onChanged: stateProvider.setSugar,
                       ),
                     ),
