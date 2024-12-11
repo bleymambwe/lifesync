@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:typed_data';
 
 class StateProvider extends ChangeNotifier {
   bool isBefore = false;
-  String buttonState = 'None';
+  String buttonState = 'Home';
   String _responseText = '';
   String get responseText => _responseText;
 
@@ -15,6 +17,8 @@ class StateProvider extends ChangeNotifier {
   List<Map<String, dynamic>> get potentialSubstitutes => _potentialSubstitutes;
 
   DatabaseReference? _databaseRef;
+
+  Uint8List? pickedImage;
 
   // Form field variables
   String name = '';
@@ -89,6 +93,28 @@ class StateProvider extends ChangeNotifier {
       }
     } catch (error) {
       print("Error ensuring nodes exist: $error");
+    }
+  }
+
+  /// Opens the camera or file picker to select an image and updates the state
+  Future<void> openCameraOrFilePicker() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png', 'jpeg'], // Image extensions
+        allowMultiple: false, // Single file selection
+        withData: true, // Include file bytes
+        dialogTitle: 'Select an Image',
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        pickedImage = result.files.first.bytes; // Update with selected file
+        notifyListeners();
+      } else {
+        print('File picker canceled');
+      }
+    } catch (e) {
+      print('Error in file picker: $e');
     }
   }
 
@@ -241,58 +267,6 @@ class StateProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // void _listenToDrugResponses() {
-  //   try {
-  //     if (_databaseRef == null) {
-  //       throw Exception("Database reference not initialized");
-  //     }
-
-  //     // Listen to all children added to the drug substitute response node
-  //     _databaseRef!
-  //         .child('user/response/drug_substitute/response')
-  //         .onChildAdded
-  //         .listen((event) {
-  //       final responseData = event.snapshot.value;
-
-  //       print("Drug substitute response received: $responseData");
-
-  //       if (responseData is String) {
-  //         // Handle string response directly
-  //         _drugResponseText = responseData;
-  //         print("Updated drug response text (String): $_drugResponseText");
-  //       } else if (responseData is List) {
-  //         // Handle list of potential substitutes
-  //         _potentialSubstitutes = responseData.cast<Map<String, dynamic>>();
-
-  //         _drugResponseText =
-  //             _potentialSubstitutes.asMap().entries.map((entry) {
-  //           final index = entry.key;
-  //           final item = entry.value;
-  //           final substanceName = item['substance_name'] ?? 'Unknown';
-  //           final brandNames = (item['brand_names'] as List?)?.join(', ') ??
-  //               'No brands available';
-  //           return '[$index] Substance: $substanceName, Brands: $brandNames';
-  //         }).join('\n');
-
-  //         print("Updated drug response text (List): $_drugResponseText");
-  //       } else {
-  //         // Unexpected format
-  //         print("Unexpected response data type: ${responseData.runtimeType}");
-  //         _drugResponseText = "Unexpected response data format.";
-  //       }
-  //       notifyListeners();
-  //     }, onError: (error) {
-  //       print("Error listening to drug responses: $error");
-  //       _drugResponseText = "Error listening to drug responses: $error";
-  //       notifyListeners();
-  //     });
-  //   } catch (error) {
-  //     print("Failed to set up drug response listener: $error");
-  //     _drugResponseText = "Failed to set up drug response listener: $error";
-  //     notifyListeners();
-  //   }
-  // }
 
   void _listenToDrugResponses() {
     try {

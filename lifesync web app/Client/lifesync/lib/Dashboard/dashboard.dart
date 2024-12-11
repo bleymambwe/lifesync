@@ -32,36 +32,54 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _loadPlanData() async {
-    // Replace this with your actual data loading logic
-    // Example using a hardcoded JSON string for demonstration:
+    // String jsonString = '''
+    // {
+    //   "Plan": {
+    //     "Summary": {
+    //       "description": "High-fiber foods and Vitamin B for stable sugar. Yoga and breathing exercises for lung function and glucose control."
+    //     },
+    //     "Diet": {
+    //       "morning": "Oatmeal with berries and nuts",
+    //       "brunch": "Greek yogurt with fruit",
+    //       "afternoon": "Salad with grilled chicken",
+    //       "supper": "Salmon with steamed vegetables"
+    //     },
+    //     "Fitness": {
+    //       "morning": "30 minutes of yoga",
+    //       "afternoon": "15 minutes of brisk walking"
+    //     },
+    //     "Water_target": 2000,
+    //     "Calories_target": 1800,
+    //     "Cost": 25
+    //   }
+    // }
+    // ''';
 
     String jsonString = '''
-    {
-      "Plan": {
-        "Summary": {
-          "description": "High-fiber foods and Vitamin B for stable sugar. Yoga and breathing exercises for lung function and glucose control."
-        },
-        "Diet": {
-          "morning": "Oatmeal with berries and nuts",
-          "brunch": "Greek yogurt with fruit",
-          "afternoon": "Salad with grilled chicken",
-          "supper": "Salmon with steamed vegetables"
-        },
-        "Fitness": {
-          "morning": "30 minutes of yoga",
-          "afternoon": "15 minutes of brisk walking"
-        },
-        "Water_target": 2000,
-        "Calories_target": 1800,
-        "Cost": 25
-      }
-    }
+{
+  "Plan": {
+    "Summary": {
+      "description": "High-fiber foods and Vitamin B for stable sugar. Yoga and breathing exercises for lung function and glucose control."
+    },
+    "Diet": {
+      "morning": "Oatmeal with almond milk, topped with chia seeds.",
+      "brunch": "Apple slices with a handful of unsalted almonds.",
+      "afternoon": "Grilled chicken salad with leafy greens and olive oil.",
+      "supper": "Steamed salmon with quinoa and steamed broccoli."
+    },
+    "Fitness": {
+      "morning": "10 minutes of breathing exercises and light yoga.",
+      "afternoon": "30-minute brisk walk or low-impact aerobics."
+    },
+    "Water_target": 2000,
+    "Calories_target": 1800,
+    "Cost": 50
+  }
+}
+
     ''';
 
     try {
-      // If you're getting data from a file or network request,
-      // use the appropriate method here (e.g., http.get, rootBundle.loadString)
-
       Map<String, dynamic> decodedJson =
           jsonDecode(jsonString); // from dart:convert
 
@@ -70,7 +88,6 @@ class _DashboardPageState extends State<DashboardPage> {
       });
     } catch (e) {
       print("Error loading plan data: $e");
-      // Handle the error appropriately (e.g., display an error message)
       setState(() {
         planData = null; // Or provide a default empty map
       });
@@ -90,52 +107,56 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
         child: Center(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              DashboardAppBar(),
-              // CallWidget(),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                DashboardAppBar(),
+                TabLayout(),
+                const SizedBox(height: 12),
 
-              // Container(
-              //   color: Colors.grey,
-              //   height: 5,
-              //   width: double.infinity,
-              // ),
-              TabLayout(),
-              SizedBox(height: 12),
-              // Container(
-              //   color: Colors.grey,
-              //   height: 5,
-              //   width: double.infinity,
-              // ),
-              PrescriptionDashboard(),
-              SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
+                // Consumer<StateProvider>(
+                //   builder: (context, provider, child) {
+                //     if (provider.buttonState == 'Drug') {
+                //       return PrescriptionDashboard();
+                //     }
+                //     return SizedBox
+                //         .shrink(); // Fallback widget if the buttonState is not 'Drug'
+                //   },
+                // ),
+
+                const SizedBox(height: 10),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
                           width: 850,
-                          //height: 700,
-// //color: Colors.green,
-                          //  SDUI(),
-                          child: HomeDashboard(planData: planData!)
-                          //DrugTableX(),
+                          child: Consumer<StateProvider>(
+                            builder: (context, stateProvider, child) {
+                              return AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                transitionBuilder: (child, animation) {
+                                  return FadeTransition(
+                                      opacity: animation, child: child);
+                                },
+                                child: stateProvider.buttonState == 'Home'
+                                    ? HomeDashboard(
+                                        key: ValueKey('Home'),
+                                        planData: planData!)
+                                    : DrugTableX(),
+                              );
+                            },
                           ),
-                      // In your DrugSearchPage or similar widget
-// DrugSubstituteTable(
-//   substitutes: _stateProvider.potentialSubstitutes
-// )
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        )),
+        ),
       ),
     );
   }
@@ -167,6 +188,19 @@ class DashboardAppBar extends StatelessWidget {
           alignment: Alignment.center,
           child: Row(
             children: [
+              SizedBox(
+                height: 55,
+                width: 60,
+                child: BlurryContainer(
+                    blur: 15,
+                    elevation: 5,
+                    color: Colors.transparent,
+                    padding: EdgeInsets.all(8),
+                    child: UploadWidget()),
+              ),
+              SizedBox(
+                width: 15,
+              ),
               BlurryContainer(
                   blur: 15,
                   elevation: 5,
@@ -177,7 +211,7 @@ class DashboardAppBar extends StatelessWidget {
                     width: 600,
                     // height: 0,
                     child: Text(
-                      'Next: High Fiber foods',
+                      'High-fiber foods and Vitamin B for stable sugar. Yoga and breathing exercises for lung function and glucose control',
                       style: AppTheme.subheadingtitle,
                       textAlign: TextAlign.center,
                     ),
@@ -348,6 +382,28 @@ class _CallWidgetState extends State<CallWidget> {
           },
           icon: Icon(
             Icons.call,
+          ));
+    });
+  }
+}
+
+class UploadWidget extends StatefulWidget {
+  const UploadWidget({super.key});
+
+  @override
+  State<UploadWidget> createState() => _UploadWidgetState();
+}
+
+class _UploadWidgetState extends State<UploadWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<StateProvider>(builder: (context, stateProvider, child) {
+      return IconButton(
+          onPressed: () {
+            stateProvider.openCameraOrFilePicker();
+          },
+          icon: Icon(
+            Icons.camera,
           ));
     });
   }

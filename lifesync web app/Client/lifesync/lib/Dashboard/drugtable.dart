@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../stateprovider.dart';
 import '../Utils/theme.dart'; // Import your StateProvider file
+import 'prescriptiondashboard.dart';
 
 class DrugTableX extends StatelessWidget {
   @override
@@ -27,6 +28,7 @@ class DrugTableX extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              PrescriptionDashboard(),
               DataTable(
                 columns: [
                   DataColumn(

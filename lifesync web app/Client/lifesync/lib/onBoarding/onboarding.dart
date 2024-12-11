@@ -30,12 +30,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ),
           // color: Colors.yellowAccent,
           child: const Center(
-            child: OnboardingCarousel(width: 600, height: 600, slides: [
-              onboardStart(),
+            child: OnboardingCarousel(width: 700, height: 600, slides: [
+              OnboardProblemStatement(),
               onboardOne(),
-              onboardTwo(),
-              onboardThree(),
+              onboardCall(),
               onboardFour(),
+              onboardLoka(),
               OnboardFinal()
             ]),
           )),
@@ -60,16 +60,36 @@ class onboardOne extends StatelessWidget {
             style: AppTheme.heading,
           ),
           Image.asset('assets/onboard_image_one.jpg'),
-          // Image.network(
-          //     'https://firebasestorage.googleapis.com/v0/b/lifesync-ai.firebasestorage.app/o/onboard%20image%20one.jpg?alt=media&token=a756055e-9df8-47f9-a971-c84289d1410d'),
         ],
       ),
     );
   }
 }
 
-class onboardTwo extends StatelessWidget {
-  const onboardTwo({super.key});
+class onboardCall extends StatelessWidget {
+  const onboardCall({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const Text(
+              ' LifeSync AI will call you for remind you to take your medicine or for general advice?',
+              textAlign: TextAlign.center,
+              style: AppTheme.heading,
+            ),
+            Image.asset('assets/onboardfour.jpg'),
+          ]),
+    );
+  }
+}
+
+class onboardProblem extends StatelessWidget {
+  const onboardProblem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +103,7 @@ class onboardTwo extends StatelessWidget {
           textAlign: TextAlign.center,
           style: AppTheme.heading,
         ),
-        Image.asset('assets/onboard_image_one.jpg'),
-        // Image.network(
-        //     'https://firebasestorage.googleapis.com/v0/b/lifesync-ai.firebasestorage.app/o/onboard%20image%20one.jpg?alt=media&token=a756055e-9df8-47f9-a971-c84289d1410d'),
+        //Image.asset('assets/onboard_image_one.jpg'),
       ],
     );
   }
@@ -129,8 +147,8 @@ class _onboardThreeState extends State<onboardThree> {
   }
 }
 
-class onboardStart extends StatelessWidget {
-  const onboardStart({super.key});
+class onboardLoka extends StatelessWidget {
+  const onboardLoka({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -149,19 +167,6 @@ class onboardStart extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.money_off),
-                Text('High Drug Costs and Data Gaps',
-                    style: AppTheme.subheading),
-              ],
-            ),
-            Text(
-              '''
-Theres a wide range in amount paid of prescriptions as high as 359568.86 paid and as low as : -124248.5 refunded or lost through average activities.
-''',
-              style: AppTheme.subsubheadingtitle,
-            ),
-            Row(
-              children: [
-                Icon(Icons.money_off),
                 Text('Reactive and Generic Interpretation of Prescriptions',
                     style: AppTheme.subheading),
               ],
@@ -171,7 +176,20 @@ Theres a wide range in amount paid of prescriptions as high as 359568.86 paid an
 There are thousands of missing procedure codes, likely stemming from systematic bias. Additionally, many codes, such as **BW21ZZZ** and **10D00Z0**, highlight a broader issue: the lack of personalization in healthcare. This underscores a system that prioritizes reactive approaches over proactive, patient-centered care.
 ''',
               style: AppTheme.subsubheadingtitle,
-            )
+            ),
+            Row(
+              children: [
+                Icon(Icons.money_off),
+                Text('High Drug Costs and Data Gaps',
+                    style: AppTheme.subheading),
+              ],
+            ),
+            Text(
+              '''
+Theres a wide range in amount paid of prescriptions as high as \$359568.86 paid and as low as : -\$124248.5 refunded or lost through average activities.
+''',
+              style: AppTheme.subsubheadingtitle,
+            ),
           ],
         )
       ],
@@ -179,148 +197,79 @@ There are thousands of missing procedure codes, likely stemming from systematic 
   }
 }
 
-// class OnboardFinal extends StatelessWidget {
-//   const OnboardFinal({super.key});
+class OnboardProblemStatement extends StatelessWidget {
+  const OnboardProblemStatement({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: [
-//         Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const SizedBox(height: 16),
-//             Text(
-//               "Please fill in your details:",
-//               style: AppTheme.subheadingtitle,
-//             ),
-//             const SizedBox(height: 24),
-//             // Row for Name and Age
-//             Row(
-//               children: [
-//                 Expanded(
-//                   child: _buildBlurryTextField(
-//                     label: "Name",
-//                     hintText: "Enter your name",
-//                   ),
-//                 ),
-//                 const SizedBox(width: 16),
-//                 Expanded(
-//                   child: _buildBlurryTextField(
-//                     label: "Age",
-//                     hintText: "Enter your age",
-//                     keyboardType: TextInputType.number,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             const SizedBox(height: 16),
-//             // Row for Contact Information, BP, and Sugar
-//             Row(
-//               children: [
-//                 Expanded(
-//                   child: _buildBlurryTextField(
-//                     label: "Contact ",
-//                     hintText: "Include your country code e.g +44..",
-//                     keyboardType: TextInputType.phone,
-//                   ),
-//                 ),
-//                 const SizedBox(width: 16),
-//                 Expanded(
-//                   child: _buildBlurryTextField(
-//                     label: "Current BP",
-//                     hintText: "Enter BP",
-//                   ),
-//                 ),
-//                 const SizedBox(width: 16),
-//                 Expanded(
-//                   child: _buildBlurryTextField(
-//                     label: "Sugar",
-//                     hintText: "Enter sugar level",
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             const SizedBox(height: 16),
-//             // Row for Underlying Condition and Prescription
-//             Row(
-//               children: [
-//                 Expanded(
-//                   child: _buildBlurryTextField(
-//                     label: "Underlying Condition",
-//                     hintText: "Enter any underlying conditions",
-//                   ),
-//                 ),
-//                 const SizedBox(width: 16),
-//                 Expanded(
-//                   child: _buildBlurryTextField(
-//                     label: "Prescription",
-//                     hintText: "Enter your prescription",
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//         Align(
-//           alignment: Alignment.bottomRight,
-//           child: InkWell(
-//             onTap: () {
-//               Navigator.of(context).push(
-//                 CustomPageRoute(
-//                   page: const DashboardPage(),
-//                   transitionType: TransitionType
-//                       .fade, // You can also use slide, scale, or rotate
-//                 ),
-//               );
-//             },
-//             child: const GContainer(
-//               // blur: 15,
-//               // elevation: 5,
-//               // color: Colors.transparent,
-//               // padding: EdgeInsets.all(8),
-//               // borderRadius: BorderRadius.all(Radius.circular(12)),
-//               child: Text(
-//                 'Get Start',
-//                 style: AppTheme.bodyText,
-//               ),
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildBlurryTextField({
-//     required String label,
-//     required String hintText,
-//     TextInputType keyboardType = TextInputType.text,
-//   }) {
-//     return BlurryContainer(
-//       blur: 15,
-//       elevation: 5,
-//       color: Colors.transparent.withGreen(50),
-//       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-//       borderRadius: const BorderRadius.all(Radius.circular(12)),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             label,
-//             style: AppTheme.subsubheadingtitle,
-//           ),
-//           const SizedBox(height: 8),
-//           TextField(
-//             keyboardType: keyboardType,
-//             style: AppTheme.bodyText,
-//             decoration: InputDecoration(
-//               hintText: hintText,
-//               hintStyle: AppTheme.bodybodyText,
-//               border: InputBorder.none,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'Key Challenges in Modern Healthcare and Wellness',
+          textAlign: TextAlign.center,
+          style: AppTheme.heading,
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                Icon(Icons.medication),
+                Text(
+                  'Medication Non-Adherence account to 50% of treatment failures',
+                  style: AppTheme.subheading,
+                ),
+              ],
+            ),
+            Text(
+              '75% of people with chronic conditions fail to take their medicine, leading to \$300 billion in healthcare costs and 125,000 preventable deaths annually. (Pharmacy Times)',
+              style: AppTheme.subsubheadingtitle,
+            ),
+            Row(
+              children: [
+                Icon(Icons.food_bank),
+                Text(
+                  'Poor Diets Are Deadly',
+                  style: AppTheme.subheading,
+                ),
+              ],
+            ),
+            Text(
+              'Poor diets are linked to 20% of global deaths, highlighting the critical need for better nutrition choices. (Time)',
+              style: AppTheme.subsubheadingtitle,
+            ),
+            Row(
+              children: [
+                Icon(Icons.directions_run),
+                Text(
+                  'Physical Inactivity Is a Global Risk',
+                  style: AppTheme.subheading,
+                ),
+              ],
+            ),
+            Text(
+              '1.8 billion adults are at heightened risk of disease due to insufficient physical activity. (WHO)',
+              style: AppTheme.subsubheadingtitle,
+            ),
+            SizedBox(height: 16),
+            Row(
+              children: [
+                Icon(Icons.health_and_safety),
+                Text(
+                  'Good Diet and Physical Activity',
+                  style: AppTheme.subheading,
+                ),
+              ],
+            ),
+            Text(
+              'Good diet and physical activity are vital. They manage symptoms, boost the immune system, reduce risks, prevent diseases, and enhance quality of life.',
+              style: AppTheme.subsubheadingtitle,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

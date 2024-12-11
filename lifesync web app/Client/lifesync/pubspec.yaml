@@ -45,7 +45,7 @@ flutter:
     - assets/onboardfour.jpg
     - assets/gradientgrainycompressed.png
     - assets/dp.jpg
-    - assets/pushup.lottie
+    - assets/call.jpg
     - assets/lifesync.lottie
 
   fonts:
@@ -57,6 +57,7 @@ flutter:
           weight: 700
         - asset: fonts/Roca Regular.ttf
           weight: 500 
+          
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

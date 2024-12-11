@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'LifeSync',
+      title: 'LifeSync AI',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.secondaryColor),
         useMaterial3: true,
@@ -60,7 +60,7 @@ class SharedScaffold extends StatelessWidget {
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/home':
-              return MaterialPageRoute(builder: (_) => const DashboardPage());
+              return MaterialPageRoute(builder: (_) => const MyHomePage());
             case '/onboarding':
               return MaterialPageRoute(builder: (_) => const OnboardingPage());
             case '/dashboard':
