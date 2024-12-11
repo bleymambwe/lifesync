@@ -1,5 +1,6 @@
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
+import 'package:lifesync/Dashboard/drugtable.dart';
 import '../Utils/custom_transition.dart';
 import 'package:provider/provider.dart';
 import '../stateprovider.dart';
@@ -32,7 +33,7 @@ class DashboardPage extends StatelessWidget {
           child: Column(
             children: [
               DashboardAppBar(),
-              CallWidget(),
+              // CallWidget(),
 
               // Container(
               //   color: Colors.grey,
@@ -45,18 +46,22 @@ class DashboardPage extends StatelessWidget {
               //   height: 5,
               //   width: double.infinity,
               // ),
-              // PrescriptionDashboard(),
+              PrescriptionDashboard(),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-//                       Container(
-//                         width: 850,
-//                         height: 700,
+                      Container(
+                        width: 850,
+                        height: 700,
 // //color: Colors.green,
-                      //  SDUI(),
-//                         // DrugSearchPage(),
-//                       ),
+                        //  SDUI(),
+                        child: DrugTableX(),
+                      ),
+                      // In your DrugSearchPage or similar widget
+// DrugSubstituteTable(
+//   substitutes: _stateProvider.potentialSubstitutes
+// )
                     ],
                   ),
                 ),

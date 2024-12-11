@@ -74,6 +74,12 @@ class AppTheme {
     fontSize: 16,
     color: Colors.black54,
   );
+  static const TextStyle bodyTextGreen = TextStyle(
+    fontFamily: 'Roca',
+    fontWeight: FontWeight.w500,
+    fontSize: 16,
+    color: darkOrange,
+  );
 
   static const TextStyle bodybodyText = TextStyle(
     fontFamily: 'Roca',

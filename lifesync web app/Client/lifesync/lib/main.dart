@@ -60,7 +60,7 @@ class SharedScaffold extends StatelessWidget {
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/home':
-              return MaterialPageRoute(builder: (_) => const MyHomePage());
+              return MaterialPageRoute(builder: (_) => const DashboardPage());
             case '/onboarding':
               return MaterialPageRoute(builder: (_) => const OnboardingPage());
             case '/dashboard':

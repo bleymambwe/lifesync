@@ -241,13 +241,64 @@ class StateProvider extends ChangeNotifier {
     }
   }
 
+  // void _listenToDrugResponses() {
+  //   try {
+  //     if (_databaseRef == null) {
+  //       throw Exception("Database reference not initialized");
+  //     }
+
+  //     // Listen to all children added to the drug substitute response node
+  //     _databaseRef!
+  //         .child('user/response/drug_substitute/response')
+  //         .onChildAdded
+  //         .listen((event) {
+  //       final responseData = event.snapshot.value;
+
+  //       print("Drug substitute response received: $responseData");
+
+  //       if (responseData is String) {
+  //         // Handle string response directly
+  //         _drugResponseText = responseData;
+  //         print("Updated drug response text (String): $_drugResponseText");
+  //       } else if (responseData is List) {
+  //         // Handle list of potential substitutes
+  //         _potentialSubstitutes = responseData.cast<Map<String, dynamic>>();
+
+  //         _drugResponseText =
+  //             _potentialSubstitutes.asMap().entries.map((entry) {
+  //           final index = entry.key;
+  //           final item = entry.value;
+  //           final substanceName = item['substance_name'] ?? 'Unknown';
+  //           final brandNames = (item['brand_names'] as List?)?.join(', ') ??
+  //               'No brands available';
+  //           return '[$index] Substance: $substanceName, Brands: $brandNames';
+  //         }).join('\n');
+
+  //         print("Updated drug response text (List): $_drugResponseText");
+  //       } else {
+  //         // Unexpected format
+  //         print("Unexpected response data type: ${responseData.runtimeType}");
+  //         _drugResponseText = "Unexpected response data format.";
+  //       }
+  //       notifyListeners();
+  //     }, onError: (error) {
+  //       print("Error listening to drug responses: $error");
+  //       _drugResponseText = "Error listening to drug responses: $error";
+  //       notifyListeners();
+  //     });
+  //   } catch (error) {
+  //     print("Failed to set up drug response listener: $error");
+  //     _drugResponseText = "Failed to set up drug response listener: $error";
+  //     notifyListeners();
+  //   }
+  // }
+
   void _listenToDrugResponses() {
     try {
       if (_databaseRef == null) {
         throw Exception("Database reference not initialized");
       }
 
-      // Listen to all children added to the drug substitute response node
       _databaseRef!
           .child('user/response/drug_substitute/response')
           .onChildAdded
@@ -256,39 +307,29 @@ class StateProvider extends ChangeNotifier {
 
         print("Drug substitute response received: $responseData");
 
-        if (responseData is String) {
-          // Handle string response directly
-          _drugResponseText = responseData;
-          print("Updated drug response text (String): $_drugResponseText");
-        } else if (responseData is List) {
-          // Handle list of potential substitutes
-          _potentialSubstitutes = responseData.cast<Map<String, dynamic>>();
-
-          _drugResponseText =
-              _potentialSubstitutes.asMap().entries.map((entry) {
-            final index = entry.key;
-            final item = entry.value;
-            final substanceName = item['substance_name'] ?? 'Unknown';
-            final brandNames = (item['brand_names'] as List?)?.join(', ') ??
-                'No brands available';
-            return '[$index] Substance: $substanceName, Brands: $brandNames';
-          }).join('\n');
-
-          print("Updated drug response text (List): $_drugResponseText");
+        if (responseData is List) {
+          // Parse as a list of maps
+          _potentialSubstitutes = responseData.map((item) {
+            if (item is Map) {
+              return Map<String, dynamic>.from(item);
+            } else {
+              throw FormatException("Invalid item type in response");
+            }
+          }).toList();
         } else {
-          // Unexpected format
+          // Unexpected response
           print("Unexpected response data type: ${responseData.runtimeType}");
-          _drugResponseText = "Unexpected response data format.";
+          _potentialSubstitutes = [];
         }
         notifyListeners();
       }, onError: (error) {
         print("Error listening to drug responses: $error");
-        _drugResponseText = "Error listening to drug responses: $error";
+        _potentialSubstitutes = [];
         notifyListeners();
       });
     } catch (error) {
       print("Failed to set up drug response listener: $error");
-      _drugResponseText = "Failed to set up drug response listener: $error";
+      _potentialSubstitutes = [];
       notifyListeners();
     }
   }
