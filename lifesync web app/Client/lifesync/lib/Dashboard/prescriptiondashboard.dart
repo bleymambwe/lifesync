@@ -75,7 +75,7 @@ class _OptimiseCostButtonState extends State<OptimiseCostButton> {
                 // Trigger the postDrug function
                 final text = _textController.text.trim();
                 if (text.isNotEmpty) {
-                  stateProvider.postDrug(text);
+                  stateProvider.checkStarted();
                   _textController.clear(); // Clear input after sending
                 } else {
                   // Optionally display an error or feedback

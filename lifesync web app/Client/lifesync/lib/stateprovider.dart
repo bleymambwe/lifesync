@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 class StateProvider extends ChangeNotifier {
   bool isBefore = false;
+  String buttonState = 'None';
   String _responseText = '';
   String get responseText => _responseText;
 
@@ -445,5 +446,11 @@ class StateProvider extends ChangeNotifier {
 
   void checkStarted() {
     print('welcome to the homepage');
+  }
+
+  void changeButtonState(String value) {
+    buttonState = value;
+    print('button state changed to $value ');
+    notifyListeners();
   }
 }

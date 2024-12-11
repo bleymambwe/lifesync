@@ -1,6 +1,7 @@
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
 import 'package:lifesync/Dashboard/drugtable.dart';
+import 'package:lifesync/Dashboard/homedashboard.dart';
 import '../Utils/custom_transition.dart';
 import 'package:provider/provider.dart';
 import '../stateprovider.dart';
@@ -11,9 +12,70 @@ import 'prescriptiondashboard.dart';
 import 'dash.dart';
 import 'datawidget.dart';
 import 'sdui.dart';
+import 'homedashboard.dart';
+import 'dart:convert';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  Map<String, dynamic>? planData; // Make planData nullable
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPlanData(); // Load data when the widget initializes
+  }
+
+  Future<void> _loadPlanData() async {
+    // Replace this with your actual data loading logic
+    // Example using a hardcoded JSON string for demonstration:
+
+    String jsonString = '''
+    {
+      "Plan": {
+        "Summary": {
+          "description": "High-fiber foods and Vitamin B for stable sugar. Yoga and breathing exercises for lung function and glucose control."
+        },
+        "Diet": {
+          "morning": "Oatmeal with berries and nuts",
+          "brunch": "Greek yogurt with fruit",
+          "afternoon": "Salad with grilled chicken",
+          "supper": "Salmon with steamed vegetables"
+        },
+        "Fitness": {
+          "morning": "30 minutes of yoga",
+          "afternoon": "15 minutes of brisk walking"
+        },
+        "Water_target": 2000,
+        "Calories_target": 1800,
+        "Cost": 25
+      }
+    }
+    ''';
+
+    try {
+      // If you're getting data from a file or network request,
+      // use the appropriate method here (e.g., http.get, rootBundle.loadString)
+
+      Map<String, dynamic> decodedJson =
+          jsonDecode(jsonString); // from dart:convert
+
+      setState(() {
+        planData = decodedJson;
+      });
+    } catch (e) {
+      print("Error loading plan data: $e");
+      // Handle the error appropriately (e.g., display an error message)
+      setState(() {
+        planData = null; // Or provide a default empty map
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,24 +102,29 @@ class DashboardPage extends StatelessWidget {
               //   height: 5,
               //   width: double.infinity,
               // ),
-              // TabLayout(),
+              TabLayout(),
+              SizedBox(height: 12),
               // Container(
               //   color: Colors.grey,
               //   height: 5,
               //   width: double.infinity,
               // ),
               PrescriptionDashboard(),
+              SizedBox(
+                height: 10,
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
                       Container(
-                        width: 850,
-                        height: 700,
+                          width: 850,
+                          //height: 700,
 // //color: Colors.green,
-                        //  SDUI(),
-                        child: DrugTableX(),
-                      ),
+                          //  SDUI(),
+                          child: HomeDashboard(planData: planData!)
+                          //DrugTableX(),
+                          ),
                       // In your DrugSearchPage or similar widget
 // DrugSubstituteTable(
 //   substitutes: _stateProvider.potentialSubstitutes
@@ -98,21 +165,38 @@ class DashboardAppBar extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.center,
-          child: BlurryContainer(
-              blur: 15,
-              elevation: 5,
-              color: Colors.transparent,
-              padding: EdgeInsets.all(8),
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              child: Container(
-                width: 300,
-                // height: 0,
-                child: Text(
-                  'Next: High Fiber foods',
-                  style: AppTheme.subheadingtitle,
-                  textAlign: TextAlign.center,
-                ),
-              )),
+          child: Row(
+            children: [
+              BlurryContainer(
+                  blur: 15,
+                  elevation: 5,
+                  color: Colors.transparent,
+                  padding: EdgeInsets.all(8),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  child: Container(
+                    width: 600,
+                    // height: 0,
+                    child: Text(
+                      'Next: High Fiber foods',
+                      style: AppTheme.subheadingtitle,
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+              SizedBox(
+                width: 15,
+              ),
+              SizedBox(
+                height: 55,
+                width: 60,
+                child: BlurryContainer(
+                    blur: 15,
+                    elevation: 5,
+                    color: Colors.transparent,
+                    padding: EdgeInsets.all(8),
+                    child: CallWidget()),
+              )
+            ],
+          ),
         ),
         SizedBox(
           height: 120,
@@ -257,27 +341,14 @@ class CallWidget extends StatefulWidget {
 class _CallWidgetState extends State<CallWidget> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        //SizedBox(width: 600, height: 400, child: DrugSubstituteUI()),
-        // SizedBox(width: 600, height: 400, child: DataWidget()),
-        SizedBox(
-            width: 600,
-            height: 400,
-            child: Consumer<StateProvider>(
-                builder: (context, stateProvider, child) {
-              return Column(
-                children: [
-                  IconButton.filledTonal(
-                      onPressed: () {
-                        stateProvider.postCall();
-                      },
-                      icon: Icon(Icons.call)),
-                  Text('data')
-                ],
-              );
-            })),
-      ],
-    );
+    return Consumer<StateProvider>(builder: (context, stateProvider, child) {
+      return IconButton(
+          onPressed: () {
+            stateProvider.postCall();
+          },
+          icon: Icon(
+            Icons.call,
+          ));
+    });
   }
 }

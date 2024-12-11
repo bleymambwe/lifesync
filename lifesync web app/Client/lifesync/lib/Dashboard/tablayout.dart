@@ -1,53 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:lifesync/Utils/theme.dart';
+import 'package:lifesync/stateprovider.dart';
 
 class TabLayout extends StatelessWidget {
   const TabLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        GContainer(
-          child: Container(
-              // width: 80,
-              //height: 30,
-              child: Text(
-            'Home',
-            style: AppTheme.subsubheadingtitle,
-          )),
-        ),
-        GContainer(
-          child: Container(
-              //width: 130,
-              // height: 30,
-              child: Text(
-            'Prescription',
-            style: AppTheme.subsubheadingtitle,
-          )),
-        ),
-        GContainer(
-          child: Container(
-              //width: 70,
-              // height: 30,
-              child: Text(
-            'Diet',
-            style: AppTheme.subsubheadingtitle,
-          )),
-        ),
-        GContainer(
-          child: Container(
-              // width: 60,
-              //height: 30,
-              child: Text(
-            ' Fitness',
-            style: AppTheme.subsubheadingtitle,
-          )),
-        )
-      ],
+    return Consumer<StateProvider>(
+      builder: (context, stateProvider, child) {
+        final currentButtonState = stateProvider.buttonState;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            // Home Tab
+            InkWell(
+              onTap: () {
+                stateProvider.changeButtonState('Home');
+              },
+              child: GContainer(
+                child: Container(
+                  child: Text(
+                    'Home',
+                    style: currentButtonState == 'Home'
+                        ? AppTheme.subheadingtitle
+                            .copyWith(color: Colors.greenAccent)
+                        : AppTheme.subsubheadingtitle,
+                  ),
+                ),
+              ),
+            ),
+            // Prescription Tab
+            InkWell(
+              onTap: () {
+                stateProvider.changeButtonState('Prescription');
+              },
+              child: GContainer(
+                child: Container(
+                  child: Text(
+                    'Prescription',
+                    style: currentButtonState == 'Prescription'
+                        ? AppTheme.subheadingtitle
+                            .copyWith(color: Colors.greenAccent)
+                        : AppTheme.subsubheadingtitle,
+                  ),
+                ),
+              ),
+            ),
+            // Diet Tab
+            InkWell(
+              onTap: () {
+                stateProvider.changeButtonState('Diet');
+              },
+              child: GContainer(
+                child: Container(
+                  child: Text(
+                    'Diet',
+                    style: currentButtonState == 'Diet'
+                        ? AppTheme.subheadingtitle
+                            .copyWith(color: Colors.greenAccent)
+                        : AppTheme.subsubheadingtitle,
+                  ),
+                ),
+              ),
+            ),
+            // Fitness Tab
+            InkWell(
+              onTap: () {
+                stateProvider.changeButtonState('Fitness');
+              },
+              child: GContainer(
+                child: Container(
+                  child: Text(
+                    'Fitness',
+                    style: currentButtonState == 'Fitness'
+                        ? AppTheme.subheadingtitle
+                            .copyWith(color: Colors.greenAccent)
+                        : AppTheme.subsubheadingtitle,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
