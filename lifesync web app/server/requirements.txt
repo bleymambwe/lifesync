@@ -1,0 +1,10 @@
+functions-framework==3.*
+langchain
+langchain-community
+openai
+firebase-admin
+firebase
+faiss-cpu
+unstructured
+tiktoken
+PyPDF2

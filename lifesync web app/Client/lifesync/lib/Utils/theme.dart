@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-const String homepageImage =
-    'https://firebasestorage.googleapis.com/v0/b/lifesync-ai.firebasestorage.app/o/homepage%2Fgradientgrainycompressed.png?alt=media&token=51d03423-012c-4c26-bde3-6ef55f6a87dc';
-
 class AppTheme {
   // Define color palette
   static const Color mainColor = Color(0xFFeeecde);

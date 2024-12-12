@@ -43,7 +43,6 @@ flutter:
   assets:
     - assets/onboard_image_one.jpg
     - assets/onboardfour.jpg
-    - assets/gradientgrainycompressed.png
     - assets/dp.jpg
     - assets/call.jpg
     - assets/lifesync.lottie
